@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React ,{ useState } from "react";
 import "primereact/resources/themes/saga-blue/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -8,7 +8,7 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Timeline } from "primereact/timeline";
 
-const socket=io("http:localhost:3001");
+const socket = io("http://localhost:3001");
 
 function App() {
   const [author, setAuthor] = useState("");
@@ -23,6 +23,7 @@ socket.on("chat", (args)=> setMessages([...messages, args]));
     const send = { author, message };
     setMessages([...messages, send]);
     setMessage("");
+    socket.emit("chat",send);
   };
 
   return (
@@ -42,9 +43,9 @@ socket.on("chat", (args)=> setMessages([...messages, args]));
         <Timeline 
         value={messages}
         opposite={(item) => item.author}
-        content={(item)=>{
+        content={(item)=>(
           <small className="p-text-secondary">{item.message}</small>
-        }}/>
+        )}/>
       </div>
     </div>
   );
